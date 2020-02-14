@@ -19,9 +19,10 @@
    sudo rm /usr/local/etc/clamav/freshclam.conf
    sudo rm /usr/local/etc/clamav/clamd.conf
    ```
-1. Clone install scrip packackage `git clone https://github.com/daniellmorris/clamav-tools.git`
+1. Navigate to a directory where you want to store this script (If no preference then run `cd ~` to navigate home)
+1. Clone install script package `git clone https://github.com/daniellmorris/clamav-tools.git`
 1. Navigate into cloned directory `cd clamav-tools`
-1. Set executible permission on install script `chmod +x install-on-macos.sh`
+1. Set executable permission on install script `chmod +x install-on-macos.sh`
 1. Run install script `./install-on-macos.sh`
 1. Go to System Preferences -> Security & Privacy -> Privacy -> Full Disk Access.
 1. Check clamav to enable full disk access
