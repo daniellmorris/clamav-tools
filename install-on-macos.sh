@@ -3,10 +3,10 @@
 CONFIG_FOLDER=/usr/local/etc/clamav
 CLAMD_CONFIG_FILE=$CONFIG_FOLDER/clamd.conf
 FRESHCLAM_CONFIG_FILE=$CONFIG_FOLDER/freshclam.conf
-DB_FOLDER=/usr/local/var/lib/clamav
 BASE_FOLDER=/usr/local/var/clamav
-RUN_FOLDER=/usr/local/var/clamav/run
-LOG_FOLDER=/usr/local/var/clamav/log
+DB_FOLDER=$BASE_FOLDER/db
+RUN_FOLDER=$BASE_FOLDER/run
+LOG_FOLDER=$BASE_FOLDER/log
 CLAMD_LOG_FILE=$LOG_FOLDER/clamd.log
 CLAMD_ERROR_LOG_FILE=$LOG_FOLDER/clamd.error.log
 FRESHCLAM_LOG_FILE=$LOG_FOLDER/freshclam.log
@@ -24,6 +24,7 @@ CLAMDSCAN_ERROR_LOG_FILE=$LOG_FOLDER/clamdscan.error.log
   cp "${CLAMD_CONFIG_FILE}.sample" "$CLAMD_CONFIG_FILE"
   sed -e "s/# Example config file/# Config file/" \
            -e "s/^Example$/# Example/" \
+           -e "s/^#MaxDirectoryRecursion 20$/MaxDirectoryRecursion 25/" \
            -e "s/^#LogFile .*/LogFile ${CLAMD_LOG_FILE//\//\\/}/" \
            -e "s/^#PidFile .*/PidFile ${RUN_FOLDER//\//\\/}\/clamd.pid/" \
            -e "s/^#DatabaseDirectory .*/DatabaseDirectory ${DB_FOLDER//\//\\/}/" \
@@ -41,12 +42,23 @@ CLAMDSCAN_ERROR_LOG_FILE=$LOG_FOLDER/clamdscan.error.log
            -i -n "$FRESHCLAM_CONFIG_FILE"
 #)
 
+sudo dscl . create /Groups/clamav
+sudo dscl . create /Groups/clamav RealName "Clam Antivirus Group"
+sudo dscl . create /Groups/clamav gid 799           # Ensure this is unique!
+sudo dscl . create /Users/clamav
+sudo dscl . create /Users/clamav RealName "Clam Antivirus User"
+sudo dscl . create /Users/clamav UserShell /bin/false
+sudo dscl . create /Users/clamav UniqueID 599       # Ensure this is unique!
+sudo dscl . create /Users/clamav PrimaryGroupID 799 # Must match the above gid!
+
 sudo mkdir -p $BASE_FOLDER
 sudo mkdir -p $RUN_FOLDER
 sudo mkdir -p $LOG_FOLDER
+sudo mkdir -p $DB_FOLDER
 sudo chown clamav:clamav $BASE_FOLDER
 sudo chown clamav:clamav $RUN_FOLDER
 sudo chown clamav:clamav $LOG_FOLDER
+sudo chown clamav:clamav $DB_FOLDER
 #[ -e "$CLAMD_LOG_FILE" ] || sudo touch "$CLAMD_LOG_FILE"
 #[ -e "$CLAMD_ERROR_LOG_FILE" ] || sudo touch "$CLAMD_ERROR_LOG_FILE"
 #[ -e "$FRESHCLAM_LOG_FILE" ] || sudo touch "$FRESHCLAM_LOG_FILE"
