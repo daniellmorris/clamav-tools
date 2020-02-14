@@ -26,4 +26,8 @@
 1. Run install script `./install-on-macos.sh`
 1. Go to System Preferences -> Security & Privacy -> Privacy -> Full Disk Access.
 1. Check clamav to enable full disk access
-1. To test that it works `sudo clamdscan -m /User`. This could take hours to finish
+1. Verify files are in this location by running `ls /usr/local/var/clamav/db` and making sure some files exist. Something like the following should exist
+   ```
+   bytecode.cvd  daily.cvd     main.cvd
+   ```
+1. To test that it works run `sudo clamdscan -m /Users`. This could take hours to finish. 
