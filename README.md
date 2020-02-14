@@ -4,7 +4,7 @@
 1. Homebrew
 2. MacOS
 
-## New Instructions - Step by step directions for installing and configuring
+## Step by step directions for installing and configuring
 1. Open terminal
 1. If you previously installed clamav then run the following commands
    ```BASH
