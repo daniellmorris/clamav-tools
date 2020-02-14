@@ -12,6 +12,7 @@
    brew uninstall clamav
    sudo rm -rf /usr/local/var/lib/clamav
    sudo rm -rf /usr/local/var/clamav
+   cd /Library/LaunchDaemons/ && sudo launchctl unload clamav.freshclam.plist clamav.clamd.plist clamav.clamdscan.plist
    ```
 1. Remove old config files
    ```BASH
@@ -22,7 +23,6 @@
 1. Navigate into cloned directory `cd clamav-tools`
 1. Set executible permission on install script `chmod +x install-on-macos.sh`
 1. Run install script `./install-on-macos.sh`
-1. Go to System Preferences -> Security & Privacy -> Full Disk Access.
+1. Go to System Preferences -> Security & Privacy -> Privacy -> Full Disk Access.
 1. Check clamav to enable full disk access
-1. To download the ClamAV database run `freshclam -v`
-1. To start the clamav deamon run `sudo /usr/local/sbin/clamd` now without waiting for restart
+1. To test that it works `sudo clamdscan -m /User`. This could take hours to finish
